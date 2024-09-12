@@ -1,105 +1,34 @@
-# < This section can be removed >
+# Fault Injection Simulation
 
-Official doc for public modules [hashicorp](https://developer.hashicorp.com/terraform/registry/modules/publish)
+This module provides a set of AWS FIS templates that can be re-used and parametrized.
 
-Repo structure:
+The documentations input and output can be generated with:
 
-```
-├── README.md
-├── main.tf
-├── variables.tf
-├── outputs.tf
-├── ...
-├── modules/
-│   ├── nestedA/
-│   │   ├── README.md
-│   │   ├── variables.tf
-│   │   ├── main.tf
-│   │   ├── outputs.tf
-│   ├── nestedB/
-│   ├── .../
-├── examples/
-│   ├── exampleA/
-│   │   ├── main.tf
-│   ├── exampleB/
-│   ├── .../
-```
+````bash
+terraform-docs markdown --anchor=false --html=false --indent=3 --output-file=terraform-docs.md .
+````
 
-# My Terraform Module
+## Core concepts
 
-< module description >
+AWS FIS is a tool to execute chaos engineering experiments on your AWS infrastructure. This module will contain a set of opt-in, configurable experiments you can use to create chaos and verify hypothesis about your infrastructure.
 
-## Usage
+By default no resources are created, you have to opt-in to everything you specifically want to do. In the future, once this practice has been established, we will enable all experiments by default, because we hope the system will be strong enough.
 
-< describe the module minimal code required for a deployment >
+## How do you use this module?
 
-```hcl
-module "my_module_example" {
+Create the following new module block with the desired parameters in `application_name.tf`
+
+```tf
+module "chaos_engineering" {
+  source  = "tx-pts-dai/fis/aws"
+  version = "1.0.0"
+
+  instance_termination = true
+  instance_termination_parameters = {
+    target_tag = {
+      key   = "chaos"
+      value = "ready"
+    }
+  }
 }
 ```
-
-## Explanation and description of interesting use-cases
-
-< create a h2 chapter for each section explaining special module concepts >
-
-## Examples
-
-< if the folder `examples/` exists, put here the link to the examples subfolders with their descriptions >
-
-## Contributing
-
-< issues and contribution guidelines for public modules >
-
-### Pre-Commit
-
-Installation: [install pre-commit](https://pre-commit.com/) and execute `pre-commit install`. This will generate pre-commit hooks according to the config in `.pre-commit-config.yaml`
-
-Before submitting a PR be sure to have used the pre-commit hooks or run: `pre-commit run -a`
-
-The `pre-commit` command will run:
-
-- Terraform fmt
-- Terraform validate
-- Terraform docs
-- Terraform validate with tflint
-- check for merge conflicts
-- fix end of files
-
-as described in the `.pre-commit-config.yaml` file
-
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
-
-## Providers
-
-No providers.
-
-## Modules
-
-No modules.
-
-## Resources
-
-No resources.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
-## Authors
-
-Module is maintained by [Alfredo Gottardo](https://github.com/AlfGot), [David Beauvererd](https://github.com/Davidoutz), [Davide Cammarata](https://github.com/DCamma), [Demetrio Carrara](https://github.com/sgametrio) and [Roland Bapst](https://github.com/rbapst-tamedia)
-
-## License
-
-Apache 2 Licensed. See [LICENSE](< link to license file >) for full details.

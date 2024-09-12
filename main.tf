@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.3.0"
+  required_version = ">= 1.0.4"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -7,3 +7,5 @@ terraform {
     }
   }
 }
+
+data "aws_caller_identity" "current" {}
